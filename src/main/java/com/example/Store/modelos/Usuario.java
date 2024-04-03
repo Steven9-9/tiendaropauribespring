@@ -1,16 +1,26 @@
 package com.example.Store.modelos;
 
+import com.example.Store.helpers.Evaluador;
+import com.example.Store.helpers.validacionUsuario;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="usuarios")
 public class Usuario {
+
+    private validacionUsuario validar = new validacionUsuario();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name="nombres",nullable = false,length = 50)
     private String nombres; //no vacio-solo letras y espacios-long max 50 carecteres
+
+
+
+
     @Column(name="apellidos",nullable = false,length = 50)
     private String apellidos;//no validar nada
     @Column(name="cedula",nullable = false,length = 15)
@@ -63,7 +73,21 @@ public class Usuario {
     }
 
     public void setNombres(String nombres) {
-        this.nombres = nombres;
+
+        try{
+
+           this.validar.validarNombres(nombres);
+
+        }
+
+        catch (Exception error){
+
+            System.out.println(error.getMessage());
+            this.nombres=nombres;
+
+        }
+
+
     }
 
     public String getApellidos() {
